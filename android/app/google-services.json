@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "821607411374",
+    "project_id": "jkuat-navigation",
+    "storage_bucket": "jkuat-navigation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821607411374:android:9c371aa3260def4fcdc73f",
+        "android_client_info": {
+          "package_name": "com.example.jkuat_navigation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "821607411374-v8dl6f4t11kf9pmajgjaqgcivp8bvcr6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsxlNejQqj78dHtBwvefbRlTrJFno_eNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "821607411374-v8dl6f4t11kf9pmajgjaqgcivp8bvcr6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

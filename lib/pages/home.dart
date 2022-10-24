@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jkuat_navigation/pages/indoor.dart';
+import 'package:jkuat_navigation/pages/outdoor.dart';
 import 'package:jkuat_navigation/widgets/mainDrawer.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -72,16 +74,10 @@ class _HomePageState extends State<HomePage> {
         title: GestureDetector(
           onTap: () {},
           child: const Text(
-            "Where are you going?",
+            "JKUAT NAVIGATION",
             style: TextStyle(color: Colors.black),
           ),
         ),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-          const SizedBox(
-            width: 10,
-          ),
-        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(5),
           child: Container(
@@ -105,6 +101,41 @@ class _HomePageState extends State<HomePage> {
           newGoogleMapController = controler;
           setState(() {});
           locatePosition();
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_outdoor),
+            label: 'Outdoor',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_indoor),
+            label: 'Indoor',
+          ),
+        ],
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const OutdoorPage(),
+              ),
+            );
+          }
+          if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const IndoorPage(),
+              ),
+            );
+          }
         },
       ),
     );

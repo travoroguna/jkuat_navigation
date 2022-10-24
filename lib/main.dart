@@ -3,8 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jkuat_navigation/pages/welcome.dart';
 import 'constants/AppStyle.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -18,7 +23,7 @@ class MyApp extends StatelessWidget {
     );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'City Navigation',
+      title: 'Jkuat Navigation',
       theme: ThemeData(
         primaryColor: AppStyle.primaryColor,
         primarySwatch: Colors.blue,
