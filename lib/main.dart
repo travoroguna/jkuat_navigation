@@ -5,8 +5,11 @@ import 'package:jkuat_navigation/pages/welcome.dart';
 import 'constants/AppStyle.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'pages/home.dart';
+import 'utilities/appconfig.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -31,7 +34,9 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      home: const WelcomePage(),
+      home: AppConfig.auth.currentUser != null
+          ? const HomePage()
+          : const WelcomePage(),
     );
   }
 }

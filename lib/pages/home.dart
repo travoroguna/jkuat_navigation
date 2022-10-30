@@ -4,10 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jkuat_navigation/models/account.dart';
 import 'package:jkuat_navigation/pages/indoor.dart';
-import 'package:jkuat_navigation/pages/outdoor.dart';
+import 'package:jkuat_navigation/pages/places.dart';
+import 'package:jkuat_navigation/utilities/appconfig.dart';
 import 'package:jkuat_navigation/widgets/mainDrawer.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../controllers/authController.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,6 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Account user;
+  bool userFetched = false;
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   Completer<GoogleMapController> controllerGoogleMap = Completer();
   late GoogleMapController newGoogleMapController;
@@ -32,42 +38,23 @@ class _HomePageState extends State<HomePage> {
   Set<Circle> circlesSet = {};
   bool newNotification = false;
   //   location pin
-  late BitmapDescriptor locationPin;
   @override
   void initState() {
-    Geolocator.getPositionStream().listen(userCurrentLocationUpdate);
+    fetchCurrentUser();
     super.initState();
   }
 
-  userCurrentLocationUpdate(Position position) {
-    markersSet
-        .removeWhere((element) => element.markerId == const MarkerId("user"));
-
-    markersSet.add(
-      Marker(
-          markerId: const MarkerId("user"),
-          position: LatLng(position.latitude, position.longitude),
-          anchor: const Offset(0.5, 0.5),
-          draggable: false,
-          flat: true,
-          rotation: position.heading,
-          infoWindow: const InfoWindow(
-              title: "Home Address", snippet: "Your Current Location"),
-          icon: locationPin),
-    );
-
-    setState(() {});
-    LatLng latLngPosition = LatLng(position.latitude, position.longitude);
-    CameraPosition cameraPosition =
-        CameraPosition(target: latLngPosition, zoom: 19);
-    newGoogleMapController
-        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  fetchCurrentUser() async {
+    user = await AuthController.getUserAccount(AppConfig.auth.currentUser!.uid);
+    setState(() {
+      userFetched = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: mainDrawer(context),
+      drawer: userFetched ? mainDrawer(context, user) : const Drawer(),
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.green),
@@ -124,7 +111,7 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const OutdoorPage(),
+                builder: (context) => const PlacesPage(),
               ),
             );
           }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jkuat_navigation/controllers/authController.dart';
+import 'package:jkuat_navigation/utilities/toastDialog.dart';
 import '../constants/AppStyle.dart';
 import 'home.dart';
 
@@ -94,11 +96,16 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()),
-                          );
+                          if (emailController.text.isEmpty ||
+                              passwordController.text.isEmpty) {
+                            ToastDialogue()
+                                .showToast("All fields Are Required", 0);
+                          } else {
+                            AuthController.loginUser(
+                                context,
+                                emailController.text.trim(),
+                                passwordController.text.trim());
+                          }
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,

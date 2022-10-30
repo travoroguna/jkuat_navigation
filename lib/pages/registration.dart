@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jkuat_navigation/controllers/authController.dart';
+import 'package:jkuat_navigation/models/account.dart';
+import 'package:jkuat_navigation/utilities/toastDialog.dart';
 
 import '../constants/AppStyle.dart';
 import 'home.dart';
@@ -169,12 +171,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomePage(),
-                            ),
-                          );
+                          if (validateData()) {
+                            Account account = Account(
+                                id: "",
+                                name: nameController.text.trim(),
+                                phone: phoneController.text.trim(),
+                                email: emailController.text.trim(),
+                                image: "");
+
+                            AuthController.registerNewUser(context, account,
+                                passwordController.text.trim());
+                          }
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -206,31 +213,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  // bool validateData() {
-  //   if (nameController.text.isEmpty) {
-  //     ToastDialogue().showToast("Name is required", 1);
-  //     return false;
-  //   } else if (idNumberController.text.isEmpty) {
-  //     ToastDialogue().showToast("ID number is required", 1);
-  //     return false;
-  //   } else if (emailController.text.isEmpty) {
-  //     ToastDialogue().showToast("Email is required", 1);
-  //     return false;
-  //   } else if (phoneController.text.isEmpty) {
-  //     ToastDialogue().showToast("Phone number is required", 1);
-  //     return false;
-  //   } else if (plateController.text.isEmpty) {
-  //     ToastDialogue().showToast("Bike Plate number is required", 1);
-  //     return false;
-  //   } else if (passwordController.text.isEmpty) {
-  //     ToastDialogue().showToast("Password is required", 1);
-  //     return false;
-  //   } else if (!checkedValue) {
-  //     ToastDialogue()
-  //         .showToast("Please accept terms and conditions before continuing", 1);
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
+  bool validateData() {
+    if (nameController.text.isEmpty) {
+      ToastDialogue().showToast("Name is required", 1);
+      return false;
+    } else if (emailController.text.isEmpty) {
+      ToastDialogue().showToast("Email is required", 1);
+      return false;
+    } else if (phoneController.text.isEmpty) {
+      ToastDialogue().showToast("Phone number is required", 1);
+      return false;
+    } else if (passwordController.text.isEmpty) {
+      ToastDialogue().showToast("Password is required", 1);
+      return false;
+    } else if (!checkedValue) {
+      ToastDialogue()
+          .showToast("Please accept terms and conditions before continuing", 1);
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

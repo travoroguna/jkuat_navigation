@@ -1,8 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jkuat_navigation/pages/places.dart';
+import 'package:share_plus/share_plus.dart';
+
+import 'package:jkuat_navigation/pages/account.dart';
+import 'package:jkuat_navigation/pages/support.dart';
+
+import '../models/account.dart';
 import '../pages/home.dart';
 
-Drawer mainDrawer(BuildContext context) {
+Drawer mainDrawer(BuildContext context, Account? account) {
   return Drawer(
     backgroundColor: Colors.white,
     child: ListView(
@@ -29,12 +36,13 @@ Drawer mainDrawer(BuildContext context) {
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    "Roka✨ Prisca",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    account != null ? account.name : "",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  Text("254741404366"),
+                  Text(account != null ? account.phone : ""),
                 ],
               ),
               const SizedBox(
@@ -72,12 +80,12 @@ Drawer mainDrawer(BuildContext context) {
         ),
         GestureDetector(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const DeliveriesPage(),
-            //   ),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PlacesPage(),
+              ),
+            );
           },
           child: const ListTile(
             leading: Icon(
@@ -94,34 +102,12 @@ Drawer mainDrawer(BuildContext context) {
         ),
         GestureDetector(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const Dashboard(),
-            //   ),
-            // );
-          },
-          child: const ListTile(
-            leading: Icon(
-              Icons.dashboard_outlined,
-              color: Colors.green,
-            ),
-            title: Text(
-              "Summary",
-              style: TextStyle(
-                fontSize: 13.0,
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AccountPage(),
               ),
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const AccountPage(),
-            //   ),
-            // );
+            );
           },
           child: const ListTile(
             leading: Icon(Icons.person_outline, color: Colors.green),
@@ -135,12 +121,12 @@ Drawer mainDrawer(BuildContext context) {
         ),
         GestureDetector(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const SupportPage(),
-            //   ),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SupportPage(),
+              ),
+            );
           },
           child: const ListTile(
             leading: Icon(Icons.help_outline, color: Colors.green),
@@ -154,20 +140,17 @@ Drawer mainDrawer(BuildContext context) {
         ),
         GestureDetector(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const SettingsPage(),
-            //   ),
-            // );
+            Share.share(
+                'check out this city navigation helper https://example.com',
+                subject: 'City Navigation Helper!');
           },
           child: const ListTile(
             leading: Icon(
-              CupertinoIcons.settings,
+              CupertinoIcons.share,
               color: Colors.green,
             ),
             title: Text(
-              "Settings",
+              "Share",
               style: TextStyle(
                 fontSize: 13.0,
               ),
