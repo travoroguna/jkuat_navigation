@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jkuat_navigation/pages/places.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:jkuat_navigation/pages/account.dart';
-import 'package:jkuat_navigation/pages/support.dart';
-
+import '../indoor/home.dart';
 import '../models/account.dart';
-import '../pages/home.dart';
+import '../pages/account.dart';
+import '../pages/places.dart';
+import '../pages/support.dart';
 
 Drawer mainDrawer(BuildContext context, Account? account) {
   return Drawer(
@@ -61,7 +60,7 @@ Drawer mainDrawer(BuildContext context, Account? account) {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const HomePage(),
+                builder: (context) => HomePage(),
               ),
             );
           },
@@ -167,7 +166,15 @@ Drawer mainDrawer(BuildContext context, Account? account) {
               ),
             ),
           ),
-          onTap: () {},
+          onTap: () {
+             Navigator.pushAndRemoveUntil<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                    builder: (BuildContext context) => const WelcomePage(),
+                  ),
+                  (route) => false,
+                );
+          },
         ),
       ],
     ),

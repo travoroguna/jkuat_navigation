@@ -132,7 +132,7 @@ class _DirectionsPageState extends State<DirectionsPage> {
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: GoogleMap(
-        mapType: MapType.normal,
+        mapType: MapType.terrain,
         myLocationButtonEnabled: true,
         initialCameraPosition: kenya,
         myLocationEnabled: false,

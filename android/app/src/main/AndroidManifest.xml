@@ -3,6 +3,12 @@
    <uses-permission android:name="android.permission.INTERNET"/>
    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+   <uses-sdk android:minSdkVersion="24" />
+   <uses-permission android:name="android.permission.CAMERA" />
+   <!-- Indicates that app requires ARCore ("AR Required"). Ensures app is only
+     visible in the Google Play Store on devices that support ARCore.
+    -->
+   <uses-feature android:name="android.hardware.camera.ar" />
    <application
         android:label="jkuat_navigation"
         android:name="${applicationName}"
@@ -36,6 +42,11 @@
 
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyBDOjOJB4-uVM2YssqKA0KNOwv8WSRxBd4"/>
+
+        <!-- Indicates that app requires ARCore ("AR Required"). Causes Google
+         Play Store to download and install ARCore when the app is installed.
+    -->
+        <meta-data android:name="com.google.ar.core" android:value="required" />
     </application>
       <queries>
   <!-- If your app opens https URLs -->
