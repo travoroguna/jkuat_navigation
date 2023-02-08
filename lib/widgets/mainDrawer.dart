@@ -7,6 +7,7 @@ import '../models/account.dart';
 import '../pages/account.dart';
 import '../pages/places.dart';
 import '../pages/support.dart';
+import '../pages/welcome.dart';
 
 Drawer mainDrawer(BuildContext context, Account? account) {
   return Drawer(

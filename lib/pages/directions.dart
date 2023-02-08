@@ -12,6 +12,7 @@ import 'package:jkuat_navigation/widgets/ProgressDialog.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../constants/AppStyle.dart';
+import 'package:alan_voice/alan_voice.dart';
 
 class DirectionsPage extends StatefulWidget {
   const DirectionsPage(
@@ -43,6 +44,21 @@ class _DirectionsPageState extends State<DirectionsPage> {
   Set<Polyline> polyLineSet = {};
 
   late BitmapDescriptor userPin;
+
+  _DirectionsPageState() {
+    /// Init Alan Button with project key from Alan Studio
+    AlanVoice.addButton("5c8948d3444659508f15e76e07dbf1bf2e956eca572e1d8b807a3e2338fdd0dc/stage",
+        buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
+
+    /// Handle commands from Alan Studio
+    AlanVoice.onCommand.add((command) {
+      debugPrint("got new command ${command.toString()}");
+    });
+  }
+
+
+
+
 
   DirectionDetail distanceDurationDetail = DirectionDetail(
       distanceValue: 0,

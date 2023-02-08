@@ -39,7 +39,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "Learn a new way to navigate arround and Inside JKUAT Places",
+                    "Learn a new way to navigate around and Inside JKUAT Places",
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
