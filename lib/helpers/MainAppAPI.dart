@@ -1,10 +1,13 @@
 // ignore: file_names
+import 'dart:convert';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jkuat_navigation/models/DirectionDetail.dart';
 import 'package:jkuat_navigation/utilities/appconfig.dart';
 
 import 'GoogleMapsRepository.dart';
+import 'package:alan_voice/alan_voice.dart';
 
 class MainAppAPI {
   static Future<String> searchCoordinatesAddress(
@@ -45,6 +48,20 @@ class MainAppAPI {
         durationText: resp["routes"][0]["legs"][0]["duration"]["text"],
         encodedPoints: resp["routes"][0]["overview_polyline"]["points"]);
 
+    if(directionDetail.distanceValue < 3)
+    {
+      AlanVoice.playText('You have reached your destination');
+    }
+
+    AlanVoice.playText('Distance remaining to destination is '+directionDetail.distanceText + 'Arriving  in Destination in' + directionDetail.durationText );
+
+
+
+
     return directionDetail;
   }
+
+
+
+
 }

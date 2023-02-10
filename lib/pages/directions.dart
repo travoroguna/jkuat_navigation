@@ -56,6 +56,11 @@ class _DirectionsPageState extends State<DirectionsPage> {
     });
   }
 
+  void playText(String message) {
+    /// Provide text as string param
+    AlanVoice.playText(message);
+  }
+
 
 
 
@@ -72,6 +77,7 @@ class _DirectionsPageState extends State<DirectionsPage> {
     setCustomMapPin();
     Geolocator.getPositionStream().listen(userCurrentLocationUpdate);
     super.initState();
+
   }
 
   setCustomMapPin() async {
@@ -91,6 +97,7 @@ class _DirectionsPageState extends State<DirectionsPage> {
 
     distanceDurationDetail = await MainAppAPI.obtainPlaceDirectionDetails(
         origin, destinationLatLong);
+
 
     setState(() {});
     addLocationMarker(origin, distanceDurationDetail.distanceText,
