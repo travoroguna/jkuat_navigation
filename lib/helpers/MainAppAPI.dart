@@ -9,6 +9,59 @@ import 'package:jkuat_navigation/utilities/appconfig.dart';
 import 'GoogleMapsRepository.dart';
 import 'package:alan_voice/alan_voice.dart';
 
+//djkistra algorithm implementation to get shortest path to destination
+class Graph {
+  final Map<String, Map<String, double>> _graph;
+
+  Graph(this._graph);
+
+  List<String> shortestPath(String start, String finish) {
+    final distances = <String, double>{};
+    final previous = <String, String>{};
+    final nodes = <String>[];
+
+    _graph.forEach((node, _) {
+      if (node == start) {
+        distances[node] = 0;
+      } else {
+        distances[node] = double.infinity;
+      }
+      nodes.add(node);
+    });
+
+    while (nodes.isNotEmpty) {
+      nodes.sort((a, b) => distances[a]!.compareTo(distances[b]!));
+      final smallest = nodes.removeAt(0);
+
+      if (smallest == finish) {
+        final path = <String>[];
+        var current = finish;
+        while (current != start) {
+          path.insert(0, current);
+          current = previous[current]!;
+        }
+        path.insert(0, start);
+        return path;
+      }
+
+      if (distances[smallest] == double.infinity) {
+        break;
+      }
+
+      _graph[smallest]!.forEach((neighbor, weight) {
+        final alt = distances[smallest]! + weight;
+        if (alt < distances[neighbor]!) {
+          distances[neighbor] = alt;
+          previous[neighbor] = smallest;
+        }
+      });
+    }
+
+    return <String>[];
+  }
+}
+
+
 class MainAppAPI {
   static Future<String> searchCoordinatesAddress(
       Position position, context) async {
@@ -41,6 +94,8 @@ class MainAppAPI {
           encodedPoints: "");
     }
 
+
+
     DirectionDetail directionDetail = DirectionDetail(
         distanceValue: resp["routes"][0]["legs"][0]["distance"]["value"],
         durationValue: resp["routes"][0]["legs"][0]["duration"]["value"],
@@ -48,7 +103,11 @@ class MainAppAPI {
         durationText: resp["routes"][0]["legs"][0]["duration"]["text"],
         encodedPoints: resp["routes"][0]["overview_polyline"]["points"]);
 
-    if(directionDetail.distanceValue < 3)
+
+
+
+
+    if(directionDetail.distanceValue < 0.2)
     {
       AlanVoice.playText('You have reached your destination');
     }
