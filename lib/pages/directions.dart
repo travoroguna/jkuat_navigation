@@ -33,6 +33,7 @@ class _DirectionsPageState extends State<DirectionsPage> {
   static const CameraPosition kenya = const CameraPosition(
     target: LatLng(1.286389, 36.817223),
     zoom: 19,
+
   );
 
   late Position currentPosition;
@@ -57,7 +58,7 @@ class _DirectionsPageState extends State<DirectionsPage> {
   }
 
   void playText(String message) {
-    /// Provide text as string param
+    /// Provide text as string para
     AlanVoice.playText(message);
   }
 
@@ -155,7 +156,7 @@ class _DirectionsPageState extends State<DirectionsPage> {
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: GoogleMap(
-        mapType: MapType.terrain,
+        mapType: MapType.satellite,
         myLocationButtonEnabled: true,
         initialCameraPosition: kenya,
         myLocationEnabled: false,
@@ -184,14 +185,10 @@ class _DirectionsPageState extends State<DirectionsPage> {
           children: [
             Expanded(
                 child: Text(
-              "Distance: ${distanceDurationDetail.distanceText}",
+              "Displaying fastest route to destination",
               style: const TextStyle(color: Colors.white, fontSize: 18),
             )),
-            Expanded(
-                child: Text(
-              "Duration: ${distanceDurationDetail.durationText}",
-              style: const TextStyle(color: Colors.white, fontSize: 18),
-            ))
+
           ],
         ),
       ),

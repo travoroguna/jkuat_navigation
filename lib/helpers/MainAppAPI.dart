@@ -107,7 +107,7 @@ class MainAppAPI {
 
 
 
-    if(directionDetail.distanceValue < 0.2)
+    if(directionDetail.distanceValue < 0.1)
     {
       AlanVoice.playText('You have reached your destination');
     }
