@@ -71,7 +71,8 @@ class _DirectionsPageState extends State<DirectionsPage> {
       durationValue: 0,
       distanceText: "",
       durationText: "",
-      encodedPoints: "");
+      encodedPoints: "",
+      );
 
   @override
   void initState() {

@@ -91,8 +91,13 @@ class MainAppAPI {
           durationValue: 0,
           distanceText: "",
           durationText: "",
-          encodedPoints: "");
+          encodedPoints: "",
+          );
     }
+
+
+
+
 
 
 
@@ -101,7 +106,8 @@ class MainAppAPI {
         durationValue: resp["routes"][0]["legs"][0]["duration"]["value"],
         distanceText: resp["routes"][0]["legs"][0]["distance"]["text"],
         durationText: resp["routes"][0]["legs"][0]["duration"]["text"],
-        encodedPoints: resp["routes"][0]["overview_polyline"]["points"]);
+        encodedPoints: resp["routes"][0]["overview_polyline"]["points"],
+        );
 
 
 
@@ -112,7 +118,7 @@ class MainAppAPI {
       AlanVoice.playText('You have reached your destination');
     }
 
-    AlanVoice.playText('Distance remaining to destination is '+directionDetail.distanceText + 'Arriving  in Destination in' + directionDetail.durationText );
+   AlanVoice.playText('Distance remaining to destination is '+directionDetail.distanceText + 'Arriving  in Destination in' + directionDetail.durationText  );
 
 
 
@@ -124,3 +130,4 @@ class MainAppAPI {
 
 
 }
+
