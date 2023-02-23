@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jkuat_navigation/models/account.dart';
-import 'package:jkuat_navigation/pages/indoor.dart';
 import 'package:jkuat_navigation/pages/places.dart';
 import 'package:jkuat_navigation/utilities/appconfig.dart';
 import 'package:jkuat_navigation/widgets/mainDrawer.dart';

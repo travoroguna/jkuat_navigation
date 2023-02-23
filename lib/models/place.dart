@@ -2,12 +2,14 @@
 import 'dart:convert';
 
 class Place {
+  final int id;
   final String name;
   final String latitude;
   final String longitude;
   final String image;
   final String shortName;
   Place({
+    required this.id,
     required this.name,
     required this.latitude,
     required this.longitude,
@@ -16,6 +18,7 @@ class Place {
   });
 
   Place copyWith({
+    int? id,
     String? name,
     String? latitude,
     String? longitude,
@@ -23,6 +26,7 @@ class Place {
     String? shortName,
   }) {
     return Place(
+      id: id ?? this.id,
       name: name ?? this.name,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
@@ -33,6 +37,7 @@ class Place {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'name': name,
       'latitude': latitude,
       'longitude': longitude,
@@ -43,6 +48,7 @@ class Place {
 
   factory Place.fromMap(Map<dynamic, dynamic> map) {
     return Place(
+      id: map['id'] ?? 0,
       name: map['name'] ?? '',
       latitude: map['latitude'] ?? '',
       longitude: map['longitude'] ?? '',
@@ -58,14 +64,15 @@ class Place {
 
   @override
   String toString() {
-    return 'Place(name: $name, latitude: $latitude, longitude: $longitude, image: $image, shortName: $shortName)';
+    return 'Place(id: $id, name: $name, latitude: $latitude, longitude: $longitude, image: $image, shortName: $shortName)';
   }
 
   @override
   bool operator ==(covariant Place other) {
     if (identical(this, other)) return true;
 
-    return other.name == name &&
+    return other.id == id &&
+        other.name == name &&
         other.latitude == latitude &&
         other.longitude == longitude &&
         other.image == image &&
@@ -74,7 +81,8 @@ class Place {
 
   @override
   int get hashCode {
-    return name.hashCode ^
+    return id.hashCode ^
+        name.hashCode ^
         latitude.hashCode ^
         longitude.hashCode ^
         image.hashCode ^

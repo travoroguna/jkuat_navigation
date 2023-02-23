@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jkuat_navigation/models/place.dart';
 import 'package:jkuat_navigation/pages/directions.dart';
@@ -13,16 +14,31 @@ class PlacesPage extends StatefulWidget {
 }
 
 class _PlacesPageState extends State<PlacesPage> {
-  _PlacesPageState() {
-    /// Init Alan Button with project key from Alan Studio
-    AlanVoice.addButton(
-        "5c8948d3444659508f15e76e07dbf1bf2e956eca572e1d8b807a3e2338fdd0dc/stage",
-        buttonAlign: AlanVoice.BUTTON_ALIGN_RIGHT);
+  @override
+  void initState() {
+    setupAlan();
+    super.initState();
+  }
 
-    /// Handle commands from Alan Studio
-    AlanVoice.onCommand.add((command) {
-      debugPrint("got new command ${command.toString()}");
-    });
+  setupAlan() {
+    AlanVoice.addButton(alanKey, buttonAlign: AlanVoice.BUTTON_ALIGN_RIGHT);
+    AlanVoice.callbacks.add((command) => _handleCommand(command.data));
+  }
+
+  _handleCommand(Map<String, dynamic> response) {
+    switch (response["command"]) {
+      case "take_me_to":
+        break;
+      case "i-want-to-go-to":
+        break;
+      case "how-do-i-get-to":
+        break;
+      default:
+        if (kDebugMode) {
+          print("Command was ${response["command"]}");
+        }
+        break;
+    }
   }
 
   @override
