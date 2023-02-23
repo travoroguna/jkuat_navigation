@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jkuat_navigation/helpers/MainAppAPI.dart';
 import 'package:jkuat_navigation/models/DirectionDetail.dart';
+import 'package:jkuat_navigation/utilities/appconfig.dart';
 import 'package:jkuat_navigation/utilities/utility.dart';
 import 'package:jkuat_navigation/widgets/ProgressDialog.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -47,19 +48,12 @@ class _DirectionsPageState extends State<DirectionsPage> {
 
   _DirectionsPageState() {
     /// Init Alan Button with project key from Alan Studio
-    AlanVoice.addButton(
-        "5c8948d3444659508f15e76e07dbf1bf2e956eca572e1d8b807a3e2338fdd0dc/stage",
-        buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
+    AlanVoice.addButton(alanKey, buttonAlign: AlanVoice.BUTTON_ALIGN_RIGHT);
 
     /// Handle commands from Alan Studio
     AlanVoice.onCommand.add((command) {
       debugPrint("got new command ${command.toString()}");
     });
-  }
-
-  void playText(String message) {
-    /// Provide text as string para
-    AlanVoice.playText(message);
   }
 
   DirectionDetail distanceDurationDetail = DirectionDetail(
@@ -344,6 +338,9 @@ class _DirectionsPageState extends State<DirectionsPage> {
       circlesSet.add(currentLocationCircle);
       circlesSet.add(dropOffCircle);
     });
+
+    AlanVoice.playText(
+        'Distance remaining to destination is ${distanceDurationDetail.distanceText}Arriving  in Destination in${distanceDurationDetail.durationText}');
   }
 
   Future<void> requestPermission(Permission permission) async {

@@ -105,10 +105,6 @@ class MainAppAPI {
     if (directionDetail.distanceValue < 0.1) {
       AlanVoice.playText('You have reached your destination');
     }
-
-    AlanVoice.playText(
-        'Distance remaining to destination is ${directionDetail.distanceText}Arriving  in Destination in${directionDetail.durationText}');
-
     return directionDetail;
   }
 }
