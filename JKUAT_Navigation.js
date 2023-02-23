@@ -2,6 +2,10 @@ intent('hello world', p => {
     p.play('(hello|hi there)');
 });
 
+intent('what can you do for me', p => {
+    p.play("Hello, i can help you to locate places around the university. For example you can ask me to locate Tech House");
+});
+
 
 intent('take me to $(PLACE* (.*))', p=>{
     let place = project.places.filter(x=> x.name.toLowerCase() === p.PLACE.toLowerCase() || x.short_name.toLowerCase() === p.PLACE.toLowerCase())[0];
