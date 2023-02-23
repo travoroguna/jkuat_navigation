@@ -33,7 +33,6 @@ class _DirectionsPageState extends State<DirectionsPage> {
   static const CameraPosition kenya = const CameraPosition(
     target: LatLng(1.286389, 36.817223),
     zoom: 19,
-
   );
 
   late Position currentPosition;
@@ -48,7 +47,8 @@ class _DirectionsPageState extends State<DirectionsPage> {
 
   _DirectionsPageState() {
     /// Init Alan Button with project key from Alan Studio
-    AlanVoice.addButton("5c8948d3444659508f15e76e07dbf1bf2e956eca572e1d8b807a3e2338fdd0dc/stage",
+    AlanVoice.addButton(
+        "5c8948d3444659508f15e76e07dbf1bf2e956eca572e1d8b807a3e2338fdd0dc/stage",
         buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
 
     /// Handle commands from Alan Studio
@@ -62,24 +62,19 @@ class _DirectionsPageState extends State<DirectionsPage> {
     AlanVoice.playText(message);
   }
 
-
-
-
-
   DirectionDetail distanceDurationDetail = DirectionDetail(
-      distanceValue: 0,
-      durationValue: 0,
-      distanceText: "",
-      durationText: "",
-      encodedPoints: "",
-      );
+    distanceValue: 0,
+    durationValue: 0,
+    distanceText: "",
+    durationText: "",
+    encodedPoints: "",
+  );
 
   @override
   void initState() {
     setCustomMapPin();
     Geolocator.getPositionStream().listen(userCurrentLocationUpdate);
     super.initState();
-
   }
 
   setCustomMapPin() async {
@@ -99,7 +94,6 @@ class _DirectionsPageState extends State<DirectionsPage> {
 
     distanceDurationDetail = await MainAppAPI.obtainPlaceDirectionDetails(
         origin, destinationLatLong);
-
 
     setState(() {});
     addLocationMarker(origin, distanceDurationDetail.distanceText,
@@ -183,13 +177,12 @@ class _DirectionsPageState extends State<DirectionsPage> {
           ),
         ),
         child: Row(
-          children: [
+          children: const [
             Expanded(
                 child: Text(
               "Displaying fastest route to destination",
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+              style: TextStyle(color: Colors.white, fontSize: 18),
             )),
-
           ],
         ),
       ),

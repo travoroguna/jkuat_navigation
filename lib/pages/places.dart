@@ -12,12 +12,12 @@ class PlacesPage extends StatefulWidget {
   State<PlacesPage> createState() => _PlacesPageState();
 }
 
-
 class _PlacesPageState extends State<PlacesPage> {
   _PlacesPageState() {
     /// Init Alan Button with project key from Alan Studio
-    AlanVoice.addButton("5c8948d3444659508f15e76e07dbf1bf2e956eca572e1d8b807a3e2338fdd0dc/stage",
-        buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
+    AlanVoice.addButton(
+        "5c8948d3444659508f15e76e07dbf1bf2e956eca572e1d8b807a3e2338fdd0dc/stage",
+        buttonAlign: AlanVoice.BUTTON_ALIGN_RIGHT);
 
     /// Handle commands from Alan Studio
     AlanVoice.onCommand.add((command) {

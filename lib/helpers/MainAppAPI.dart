@@ -61,7 +61,6 @@ class Graph {
   }
 }
 
-
 class MainAppAPI {
   static Future<String> searchCoordinatesAddress(
       Position position, context) async {
@@ -87,47 +86,29 @@ class MainAppAPI {
     var resp = await GoogleMapsRepository.getRequest(directionUrl);
     if (resp == "failed") {
       return DirectionDetail(
-          distanceValue: 0,
-          durationValue: 0,
-          distanceText: "",
-          durationText: "",
-          encodedPoints: "",
-          );
+        distanceValue: 0,
+        durationValue: 0,
+        distanceText: "",
+        durationText: "",
+        encodedPoints: "",
+      );
     }
 
-
-
-
-
-
-
     DirectionDetail directionDetail = DirectionDetail(
-        distanceValue: resp["routes"][0]["legs"][0]["distance"]["value"],
-        durationValue: resp["routes"][0]["legs"][0]["duration"]["value"],
-        distanceText: resp["routes"][0]["legs"][0]["distance"]["text"],
-        durationText: resp["routes"][0]["legs"][0]["duration"]["text"],
-        encodedPoints: resp["routes"][0]["overview_polyline"]["points"],
-        );
+      distanceValue: resp["routes"][0]["legs"][0]["distance"]["value"],
+      durationValue: resp["routes"][0]["legs"][0]["duration"]["value"],
+      distanceText: resp["routes"][0]["legs"][0]["distance"]["text"],
+      durationText: resp["routes"][0]["legs"][0]["duration"]["text"],
+      encodedPoints: resp["routes"][0]["overview_polyline"]["points"],
+    );
 
-
-
-
-
-    if(directionDetail.distanceValue < 0.1)
-    {
+    if (directionDetail.distanceValue < 0.1) {
       AlanVoice.playText('You have reached your destination');
     }
 
-   AlanVoice.playText('Distance remaining to destination is '+directionDetail.distanceText + 'Arriving  in Destination in' + directionDetail.durationText  );
-
-
-
+    AlanVoice.playText(
+        'Distance remaining to destination is ${directionDetail.distanceText}Arriving  in Destination in${directionDetail.durationText}');
 
     return directionDetail;
   }
-
-
-
-
 }
-
