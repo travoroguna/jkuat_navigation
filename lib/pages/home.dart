@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: GoogleMap(
-        mapType: MapType.normal,
+        mapType: MapType.satellite,
         myLocationButtonEnabled: true,
         initialCameraPosition: kenya,
         myLocationEnabled: true,
