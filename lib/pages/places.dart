@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +16,11 @@ class PlacesPage extends StatefulWidget {
 }
 
 class _PlacesPageState extends State<PlacesPage> {
+  List<Place> places = [];
   @override
   void initState() {
     setupAlan();
+    loadPlacesData();
     super.initState();
   }
 
@@ -28,10 +32,16 @@ class _PlacesPageState extends State<PlacesPage> {
   _handleCommand(Map<String, dynamic> response) {
     switch (response["command"]) {
       case "take_me_to":
+        final id = response["id"];
+        gotToDirectionPage(id);
         break;
       case "i-want-to-go-to":
+        final id = response["id"];
+        gotToDirectionPage(id);
         break;
       case "how-do-i-get-to":
+        final id = response["id"];
+        gotToDirectionPage(id);
         break;
       default:
         if (kDebugMode) {
@@ -39,6 +49,20 @@ class _PlacesPageState extends State<PlacesPage> {
         }
         break;
     }
+  }
+
+  void loadPlacesData() async {
+    String data = await DefaultAssetBundle.of(context)
+        .loadString("assets/data/places.json");
+    final jsonResult = jsonDecode(data);
+    List list = jsonResult;
+    places = list.map((e) => Place.fromMap(e)).toList();
+
+    if (kDebugMode) {
+      print("LENDTH*****************************${places.length}");
+    }
+
+    setState(() {});
   }
 
   @override
@@ -102,6 +126,30 @@ class _PlacesPageState extends State<PlacesPage> {
               },
             );
           }),
+    );
+  }
+
+  void gotToDirectionPage(int id) {
+    if (kDebugMode) {
+      print("ID***************************************$id");
+    }
+    var placeSelected = places.firstWhere((element) => element.id == id,
+        orElse: () => Place(
+            id: 0,
+            name: "",
+            latitude: "",
+            longitude: "",
+            image: "",
+            shortName: ""));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DirectionsPage(
+          name: placeSelected.name,
+          lat: placeSelected.latitude,
+          long: placeSelected.longitude,
+        ),
+      ),
     );
   }
 }
