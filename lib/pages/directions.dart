@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jkuat_navigation/helpers/MainAppAPI.dart';
 import 'package:jkuat_navigation/models/DirectionDetail.dart';
+import 'package:jkuat_navigation/pages/base_map.dart';
 import 'package:jkuat_navigation/utilities/appconfig.dart';
 import 'package:jkuat_navigation/utilities/utility.dart';
 import 'package:jkuat_navigation/widgets/ProgressDialog.dart';
@@ -144,21 +145,26 @@ class _DirectionsPageState extends State<DirectionsPage> {
         ),
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: GoogleMap(
-        mapType: MapType.satellite,
-        myLocationButtonEnabled: true,
-        initialCameraPosition: kenya,
-        myLocationEnabled: false,
-        zoomGesturesEnabled: true,
-        zoomControlsEnabled: false,
-        markers: markersSet,
-        circles: circlesSet,
-        polylines: polyLineSet,
-        onMapCreated: (GoogleMapController controler) {
-          controllerGoogleMap.complete(controler);
-          newGoogleMapController = controler;
-          locatePosition();
-        },
+      body: Stack(
+        children: [
+          BaseMap(),
+          GoogleMap(
+            mapType: MapType.satellite,
+            myLocationButtonEnabled: true,
+            initialCameraPosition: kenya,
+            myLocationEnabled: false,
+            zoomGesturesEnabled: true,
+            zoomControlsEnabled: false,
+            markers: markersSet,
+            circles: circlesSet,
+            polylines: polyLineSet,
+            onMapCreated: (GoogleMapController controler) {
+              controllerGoogleMap.complete(controler);
+              newGoogleMapController = controler;
+              locatePosition();
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: Container(
         height: 80,

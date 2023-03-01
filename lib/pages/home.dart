@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jkuat_navigation/models/account.dart';
+import 'package:jkuat_navigation/pages/base_map.dart';
 import 'package:jkuat_navigation/pages/places.dart';
 import 'package:jkuat_navigation/utilities/appconfig.dart';
 import 'package:jkuat_navigation/widgets/mainDrawer.dart';
@@ -73,21 +74,26 @@ class _HomePageState extends State<HomePage> {
               color: Colors.green),
         ),
       ),
-      body: GoogleMap(
-        mapType: MapType.satellite,
-        myLocationButtonEnabled: true,
-        initialCameraPosition: kenya,
-        myLocationEnabled: true,
-        zoomGesturesEnabled: true,
-        zoomControlsEnabled: false,
-        markers: markersSet,
-        circles: circlesSet,
-        onMapCreated: (GoogleMapController controler) {
-          controllerGoogleMap.complete(controler);
-          newGoogleMapController = controler;
-          setState(() {});
-          locatePosition();
-        },
+      body: Stack(
+        children: [
+          BaseMap(),
+          GoogleMap(
+            mapType: MapType.satellite,
+            myLocationButtonEnabled: true,
+            initialCameraPosition: kenya,
+            myLocationEnabled: true,
+            zoomGesturesEnabled: true,
+            zoomControlsEnabled: false,
+            markers: markersSet,
+            circles: circlesSet,
+            onMapCreated: (GoogleMapController controler) {
+              controllerGoogleMap.complete(controler);
+              newGoogleMapController = controler;
+              setState(() {});
+              locatePosition();
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
