@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
-
-import '../indoor/home.dart';
 import '../models/account.dart';
 import '../pages/account.dart';
 import '../pages/places.dart';
@@ -58,12 +56,12 @@ Drawer mainDrawer(BuildContext context, Account? account) {
         //Drawer Body
         GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => IndoorHomePage(),
+            //   ),
+            // );
           },
           child: const ListTile(
             leading: Icon(
