@@ -90,7 +90,7 @@ class _DirectionsPageState extends State<DirectionsPage> {
     distanceDurationDetail = await MainAppAPI.obtainPlaceDirectionDetails(
         origin, destinationLatLong);
 
-    setState(() {});
+    // setState(() {});
     addLocationMarker(origin, distanceDurationDetail.distanceText,
         distanceDurationDetail.distanceText);
   }
