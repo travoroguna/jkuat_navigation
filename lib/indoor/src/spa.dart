@@ -185,31 +185,32 @@ class _SPAState extends State<SPA> {
       appBar: AppBar(
         title: Text('SPA'),
       ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          _createHomeTab(),
-          _createSitumMapTab(),
-
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'SPA',
-          ),
-
-        ],
-        currentIndex: _selectedIndex,
-        unselectedItemColor: Colors.green,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),
+      body: _createSitumMapTab()
+      // IndexedStack(
+      //   index: _selectedIndex,
+      //   children: [
+      //     _createHomeTab(),
+      //     _createSitumMapTab(),
+      //
+      //   ],
+      // ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const <BottomNavigationBarItem>[
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.map),
+      //       label: 'SPA',
+      //     ),
+      //
+      //   ],
+      //   currentIndex: _selectedIndex,
+      //   unselectedItemColor: Colors.green,
+      //   selectedItemColor: Colors.amber[800],
+      //   onTap: _onItemTapped,
+      // ),
     );
   }
 
