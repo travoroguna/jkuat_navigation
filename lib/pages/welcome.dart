@@ -12,6 +12,14 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  // @override
+  // Future<void> initState() async {
+  //   // TODO: implement initState
+  //   Map<Permission, PermissionStatus> statuses = await [
+  //   Permission.location
+  //   ].request();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

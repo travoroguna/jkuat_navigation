@@ -345,8 +345,7 @@ class _DirectionsPageState extends State<DirectionsPage> {
       circlesSet.add(dropOffCircle);
     });
 
-    AlanVoice.playText(
-        'Distance remaining to destination is ${distanceDurationDetail.distanceText}Arriving  in Destination in${distanceDurationDetail.durationText}');
+   // AlanVoice.playText('Distance remaining to destination is ${distanceDurationDetail.distanceText}Arriving  in Destination in${distanceDurationDetail.durationText}');
   }
 
   Future<void> requestPermission(Permission permission) async {
