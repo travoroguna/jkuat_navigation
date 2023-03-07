@@ -4,23 +4,16 @@ import 'package:situm_flutter_wayfinding/situm_flutter_sdk.dart';
 import 'package:situm_flutter_wayfinding/situm_flutter_wayfinding.dart';
 
 class Building extends StatefulWidget {
-  // const Building({Key? key}) : super(key: key);
-  final String buildingIdentifier;
-  final String searchViewPlaceholder;
-
-  const Building(this.buildingIdentifier, this.searchViewPlaceholder,
-      {super.key});
-
-  @override
-  State<Building> createState() =>
-      _BuildingState(this.buildingIdentifier, this.searchViewPlaceholder);
-}
-
-class _BuildingState extends State<Building> {
   final String buildingIdentifier;
   final String buildingName;
 
-  _BuildingState(this.buildingIdentifier, this.buildingName);
+  const Building(this.buildingIdentifier, this.buildingName, {super.key});
+
+  @override
+  State<Building> createState() => _BuildingState();
+}
+
+class _BuildingState extends State<Building> {
   late SitumFlutterSDK situmSdk;
 
   int _selectedIndex = 0;
@@ -32,7 +25,7 @@ class _BuildingState extends State<Building> {
       child: Column(
         children: [
           Text(
-            buildingName,
+            widget.buildingName,
             style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           ButtonBar(
@@ -85,17 +78,16 @@ class _BuildingState extends State<Building> {
     );
   }
 
-  Widget _createSitumMapTab(
-      String buildingIdentifier, String searchViewPlaceholder) {
+  Widget _createSitumMapTab() {
     // The Situm map:
     return SitumMapView(
       key: const Key("situm_map"),
       // Your Situm credentials and building, see config.dart.
       // Copy config.dart.example if you haven't already.
-      searchViewPlaceholder: searchViewPlaceholder,
+      searchViewPlaceholder: widget.buildingName,
       situmUser: situmUser,
       situmApiKey: situmApiKey,
-      buildingIdentifier: buildingIdentifier,
+      buildingIdentifier: widget.buildingIdentifier,
       googleMapsApiKey: googleMapsApiKey,
       useHybridComponents: true,
       showPoiNames: true,
@@ -193,13 +185,13 @@ class _BuildingState extends State<Building> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(buildingName),
+        title: Text(widget.buildingName),
       ),
       body: IndexedStack(
         index: _selectedIndex,
         children: [
           _createHomeTab(),
-          _createSitumMapTab(buildingIdentifier, buildingName),
+          _createSitumMapTab(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

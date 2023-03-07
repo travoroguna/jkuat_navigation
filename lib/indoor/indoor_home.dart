@@ -24,24 +24,26 @@ class _IndoorHomePageState extends State<IndoorHomePage> {
       ),
       body: ListView(
         children: [
-          makeBuildingNav(context, buildingIdentifierSPA, "SPA", 'Swimming Pool Annex'),
-          makeBuildingNav(context, buildingIdentifierELB, "ELB", 'Engineering Laboratory Building'),
-          makeBuildingNav(context, buildingIdentifierNCLB, "NCLB", 'New Common Laboratory Building'),
+          makeBuildingNav(
+              context, buildingIdentifierSPA, "SPA", 'Swimming Pool Annex'),
+          makeBuildingNav(context, buildingIdentifierELB, "ELB",
+              'Engineering Laboratory Building'),
+          makeBuildingNav(context, buildingIdentifierNCLB, "NCLB",
+              'New Common Laboratory Building'),
         ],
       ),
     );
   }
 
-  GestureDetector makeBuildingNav(
-      BuildContext context, String buildingIdentifier, String buildingName, String title) {
+  GestureDetector makeBuildingNav(BuildContext context,
+      String buildingIdentifier, String buildingName, String title) {
     return GestureDetector(
       onTap: () {
-        // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>SPA(), (route) => false)
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Building(buildingIdentifier, buildingName)));
+          context,
+          MaterialPageRoute(
+              builder: (context) => Building(buildingIdentifier, buildingName)),
+        );
       },
       child: Container(
         decoration: const BoxDecoration(color: Colors.white),
