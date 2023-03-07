@@ -4,78 +4,30 @@ import 'package:situm_flutter_wayfinding/situm_flutter_sdk.dart';
 import 'package:situm_flutter_wayfinding/situm_flutter_wayfinding.dart';
 
 class Building extends StatefulWidget {
-  final String buildingIdentifier;
-  final String buildingName;
+  String buildingIdentifier = "";
+  String buildingName = "";
+  late SitumFlutterSDK situmSdk;
 
-  const Building(this.buildingIdentifier, this.buildingName, {super.key});
+  Building(this.buildingIdentifier, this.buildingName, {super.key}) {
+    situmSdk = SitumFlutterSDK();
+    situmSdk.init(situmUser, situmApiKey);
+    situmSdk.setConfiguration(ConfigurationOptions(
+      useRemoteConfig: true,
+    ));
+  }
 
   @override
   State<Building> createState() => _BuildingState();
 }
 
 class _BuildingState extends State<Building> {
-  late SitumFlutterSDK situmSdk;
-
-  int _selectedIndex = 0;
   String currentOutput = "---";
+  SitumFlutterWayfinding? mapController;
 
-  Widget _createHomeTab() {
-    // Home:
-    return Card(
-      child: Column(
-        children: [
-          Text(
-            widget.buildingName,
-            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                  onPressed: () {
-                    _requestUpdates();
-                  },
-                  child: const Text('Start')),
-              TextButton(
-                  onPressed: () {
-                    _removeUpdates();
-                  },
-                  child: const Text('Stop')),
-              TextButton(
-                  onPressed: () {
-                    _echo("SDK> RESPONSE: CLEAR CACHE...");
-                    _clearCache();
-                  },
-                  child: const Text('Clear cache')),
-            ],
-          ),
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                  onPressed: () {
-                    _echo("SDK> POIS...");
-                    _fetchPois();
-                  },
-                  child: const Text('Pois')),
-              TextButton(
-                  onPressed: () {
-                    _echo("SDK> CATEGORIES...");
-                    _fetchCategories();
-                  },
-                  child: const Text('Categories')),
-              TextButton(
-                  onPressed: () {
-                    _echo("SDK> PREFETCH...");
-                    _prefetch();
-                  },
-                  child: const Text('Prefetch')),
-            ],
-          ),
-          Text(currentOutput)
-        ],
-      ),
-    );
+  @override
+  void dispose() {
+    mapController?.unload();
+    super.dispose();
   }
 
   Widget _createSitumMapTab() {
@@ -106,80 +58,9 @@ class _BuildingState extends State<Building> {
   }
 
   void _onSitumMapLoaded(SitumFlutterWayfinding controller) {
-    // The Situm map was successfully loaded, use the given controller to
-    // call the WYF API methods.
-    print("WYF> Situm Map loaded!");
-    controller.onPoiSelected((poiSelectedResult) {
-      print("WYF> Poi ${poiSelectedResult.poiName} selected!");
-    });
-    controller.onPoiDeselected((poiDeselectedResult) {
-      print("WYF> Poi deselected!");
-    });
-    controller.onNavigationStarted((navigation) {
-      print("WYF> Nav started, distance = ${navigation.route?.distance}");
-    });
-    //controller.startPositioning();
-    //controller.selectPoi(MY_POI_ID, buildingIdentifier);
+    mapController = controller;
   }
 
-  @override
-  void initState() {
-    // SitumSdk for flutter:
-    situmSdk = SitumFlutterSDK();
-    situmSdk.init(situmUser, situmApiKey);
-    situmSdk.setConfiguration(ConfigurationOptions(
-      useRemoteConfig: true,
-    ));
-    situmSdk.onEnterGeofences((geofencesResult) {
-      _echo("SDK> Enter geofences: ${geofencesResult.geofences}.");
-    });
-    situmSdk.onExitGeofences((geofencesResult) {
-      _echo("SDK> Exit geofences: ${geofencesResult.geofences}.");
-    });
-
-    // situmSdk.removeUpdates();
-    super.initState();
-  }
-
-  void _echo(String output) {
-    setState(() {
-      currentOutput = output;
-      print(currentOutput);
-    });
-  }
-
-  void _requestUpdates() async {
-    situmSdk.requestLocationUpdates(_MyLocationListener(), {});
-  }
-
-  void _removeUpdates() async {
-    situmSdk.removeUpdates();
-  }
-
-  void _clearCache() async {
-    await situmSdk.clearCache();
-    _echo("SDK> RESPONSE: CLEAR CACHE = DONE");
-  }
-
-  void _prefetch() async {
-    var prefetch = await situmSdk.prefetchPositioningInfo(
-      [buildingIdentifier],
-      options: PrefetchOptions(
-        preloadImages: true,
-      ),
-    );
-    _echo("SDK> RESPONSE: PREFETCH = $prefetch");
-  }
-
-  void _fetchPois() async {
-    var pois = await situmSdk.fetchPoisFromBuilding(buildingIdentifier);
-    _echo("SDK> RESPONSE: POIS = $pois");
-  }
-
-  void _fetchCategories() async {
-    var categories = await situmSdk.fetchPoiCategories();
-    _echo("SDK> RESPONSE: CATEGORIES = $categories");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,53 +68,8 @@ class _BuildingState extends State<Building> {
       appBar: AppBar(
         title: Text(widget.buildingName),
       ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          _createHomeTab(),
-          _createSitumMapTab(),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'SPA',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        unselectedItemColor: Colors.green,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),
+      body: _createSitumMapTab(),
     );
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-}
-
-class _MyLocationListener implements LocationListener {
-  @override
-  void onError(Error error) {
-    print("SDK> ERROR: ${error.message}");
-  }
-
-  @override
-  void onLocationChanged(OnLocationChangedResult locationChangedResult) {
-    print(
-        "SDK> Location changed, building ID is: ${locationChangedResult.buildingId}");
-  }
-
-  @override
-  void onStatusChanged(String status) {
-    print("SDK> STATUS: $status");
-  }
 }
