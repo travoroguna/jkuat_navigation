@@ -3,15 +3,24 @@ import 'package:jkuat_navigation/utilities/appconfig.dart';
 import 'package:situm_flutter_wayfinding/situm_flutter_sdk.dart';
 import 'package:situm_flutter_wayfinding/situm_flutter_wayfinding.dart';
 
+class Building extends StatefulWidget {
+  // const Building({Key? key}) : super(key: key);
+  final String buildingIdentifier;
+  final String searchViewPlaceholder;
 
-class Nclb extends StatefulWidget {
-  const Nclb({Key? key}) : super(key: key);
+  const Building(this.buildingIdentifier, this.searchViewPlaceholder,
+      {super.key});
 
   @override
-  State<Nclb> createState() => _NclbState();
+  State<Building> createState() =>
+      _BuildingState(this.buildingIdentifier, this.searchViewPlaceholder);
 }
 
-class _NclbState extends State<Nclb> {
+class _BuildingState extends State<Building> {
+  final String buildingIdentifier;
+  final String buildingName;
+
+  _BuildingState(this.buildingIdentifier, this.buildingName);
   late SitumFlutterSDK situmSdk;
 
   int _selectedIndex = 0;
@@ -22,9 +31,9 @@ class _NclbState extends State<Nclb> {
     return Card(
       child: Column(
         children: [
-          const Text(
-            'NCLB',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          Text(
+            buildingName,
+            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           ButtonBar(
             alignment: MainAxisAlignment.center,
@@ -76,16 +85,17 @@ class _NclbState extends State<Nclb> {
     );
   }
 
-  Widget _createSitumMapTab() {
+  Widget _createSitumMapTab(
+      String buildingIdentifier, String searchViewPlaceholder) {
     // The Situm map:
     return SitumMapView(
       key: const Key("situm_map"),
       // Your Situm credentials and building, see config.dart.
       // Copy config.dart.example if you haven't already.
-      searchViewPlaceholder: "Search NCLB",
+      searchViewPlaceholder: searchViewPlaceholder,
       situmUser: situmUser,
       situmApiKey: situmApiKey,
-      buildingIdentifier: buildingIdentifierNCLB,
+      buildingIdentifier: buildingIdentifier,
       googleMapsApiKey: googleMapsApiKey,
       useHybridComponents: true,
       showPoiNames: true,
@@ -118,7 +128,6 @@ class _NclbState extends State<Nclb> {
     });
     //controller.startPositioning();
     //controller.selectPoi(MY_POI_ID, buildingIdentifier);
-
   }
 
   @override
@@ -127,7 +136,7 @@ class _NclbState extends State<Nclb> {
     situmSdk = SitumFlutterSDK();
     situmSdk.init(situmUser, situmApiKey);
     situmSdk.setConfiguration(ConfigurationOptions(
-      useRemoteConfig: false,
+      useRemoteConfig: true,
     ));
     situmSdk.onEnterGeofences((geofencesResult) {
       _echo("SDK> Enter geofences: ${geofencesResult.geofences}.");
@@ -135,6 +144,8 @@ class _NclbState extends State<Nclb> {
     situmSdk.onExitGeofences((geofencesResult) {
       _echo("SDK> Exit geofences: ${geofencesResult.geofences}.");
     });
+
+    // situmSdk.removeUpdates();
     super.initState();
   }
 
@@ -146,7 +157,6 @@ class _NclbState extends State<Nclb> {
   }
 
   void _requestUpdates() async {
-    _echo("starting");
     situmSdk.requestLocationUpdates(_MyLocationListener(), {});
   }
 
@@ -161,7 +171,7 @@ class _NclbState extends State<Nclb> {
 
   void _prefetch() async {
     var prefetch = await situmSdk.prefetchPositioningInfo(
-      [buildingIdentifierNCLB],
+      [buildingIdentifier],
       options: PrefetchOptions(
         preloadImages: true,
       ),
@@ -170,7 +180,7 @@ class _NclbState extends State<Nclb> {
   }
 
   void _fetchPois() async {
-    var pois = await situmSdk.fetchPoisFromBuilding(buildingIdentifierNCLB);
+    var pois = await situmSdk.fetchPoisFromBuilding(buildingIdentifier);
     _echo("SDK> RESPONSE: POIS = $pois");
   }
 
@@ -179,45 +189,35 @@ class _NclbState extends State<Nclb> {
     _echo("SDK> RESPONSE: CATEGORIES = $categories");
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('NCLB'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.pop(context);
-          }
-        ),
+        title: Text(buildingName),
       ),
-      body:  _createSitumMapTab()
-      // IndexedStack(
-      //   index: _selectedIndex,
-      //   children: [
-      //     _createHomeTab(),
-      //     _createSitumMapTab(),
-      //
-      //   ],
-      // ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.map),
-      //       label: 'NCLB',
-      //     ),
-      //
-      //   ],
-      //   currentIndex: _selectedIndex,
-      //   unselectedItemColor: Colors.green,
-      //   selectedItemColor: Colors.amber[800],
-      //   onTap: _onItemTapped,
-      // ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          _createHomeTab(),
+          _createSitumMapTab(buildingIdentifier, buildingName),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'SPA',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        unselectedItemColor: Colors.green,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
     );
   }
 

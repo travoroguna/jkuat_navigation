@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jkuat_navigation/indoor/src/elb.dart';
-import 'package:jkuat_navigation/indoor/src/nclb.dart';
-
-import 'src/spa.dart';
+import 'package:jkuat_navigation/indoor/building.dart';
+import 'package:jkuat_navigation/utilities/appconfig.dart';
 
 class IndoorHomePage extends StatefulWidget {
   const IndoorHomePage({Key? key}) : super(key: key);
@@ -26,68 +24,38 @@ class _IndoorHomePageState extends State<IndoorHomePage> {
       ),
       body: ListView(
         children: [
-          GestureDetector(
-            onTap: () {
-              // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>SPA(), (route) => false)
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => SPA()));
-            },
-            child: Container(
-              decoration: const BoxDecoration(color: Colors.white),
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: const ListTile(
-                leading: Icon(
-                  Icons.place,
-                  color: Colors.green,
-                  size: 30,
-                ),
-                title: Text('Swimming Pool Annex'),
-                subtitle: Text('SPA'),
-                trailing: Icon(Icons.arrow_forward_ios),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Elb()));
-            },
-            child: Container(
-              decoration: const BoxDecoration(color: Colors.white),
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: const ListTile(
-                leading: Icon(
-                  Icons.place,
-                  color: Colors.green,
-                  size: 30,
-                ),
-                title: Text('Engineering Laboratory Building'),
-                subtitle: Text('ELB'),
-                trailing: Icon(Icons.arrow_forward_ios),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Nclb()));
-            },
-            child: Container(
-              decoration: const BoxDecoration(color: Colors.white),
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: const ListTile(
-                leading: Icon(
-                  Icons.place,
-                  color: Colors.green,
-                  size: 30,
-                ),
-                title: Text('New Common Laboratory Building'),
-                subtitle: Text('NCLB'),
-                trailing: Icon(Icons.arrow_forward_ios),
-              ),
-            ),
-          ),
+          makeBuildingNav(context, buildingIdentifierSPA, "SPA", 'Swimming Pool Annex'),
+          makeBuildingNav(context, buildingIdentifierELB, "ELB", 'Engineering Laboratory Building'),
+          makeBuildingNav(context, buildingIdentifierNCLB, "NCLB", 'New Common Laboratory Building'),
         ],
+      ),
+    );
+  }
+
+  GestureDetector makeBuildingNav(
+      BuildContext context, String buildingIdentifier, String buildingName, String title) {
+    return GestureDetector(
+      onTap: () {
+        // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>SPA(), (route) => false)
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    Building(buildingIdentifier, buildingName)));
+      },
+      child: Container(
+        decoration: const BoxDecoration(color: Colors.white),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: ListTile(
+          leading: const Icon(
+            Icons.place,
+            color: Colors.green,
+            size: 30,
+          ),
+          title: Text(title),
+          subtitle: Text(buildingName),
+          trailing: const Icon(Icons.arrow_forward_ios),
+        ),
       ),
     );
   }
